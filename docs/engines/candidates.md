@@ -11,6 +11,13 @@ chosen yet. The user's criteria, after trying Commander Wars:
 Last reviewed: 2026-10-15. Facts below come from the sources linked; items
 marked *to verify* were not confirmed.
 
+## Decision
+
+2026-10-15: no option offers modern theme, polish and moddability at once.
+The user chose **polish**: Wargroove is the target and the theme is
+transposed to fantasy. Commander Wars and the AW2 ROM hack stay documented
+as fallbacks.
+
 ## Commander Wars (open source, Advance Wars clone)
 
 - Fit for the design: excellent — every feature was checked against the

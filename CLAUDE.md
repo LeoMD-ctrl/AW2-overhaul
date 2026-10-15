@@ -62,10 +62,14 @@ A short campaign with its own story ties the axes together.
 
 ## Current status
 
-- Engine choice pending. Wargroove is the lead candidate; what is verified
-  and what remains open is in `docs/engines/wargroove.md`. The official
-  modding guide (wargroovewiki.com) is blocked by the work environment's
-  network policy.
+- **Decision (2026-10-15): polish comes first.** Between modern military
+  theme, polish and moddability, the user keeps polish and moddability:
+  Wargroove (1 or 2, not bought yet) is the target, and the modern theme is
+  transposed into its fantasy world (e.g. a "forbidden technology"
+  faction). The game design stays the same; only the dressing changes.
+  What is verified and what remains open is in
+  `docs/engines/wargroove.md`. The official modding guide
+  (wargroovewiki.com) is blocked by the work environment's network policy.
 - The user produces sprites with Retro Diffusion, PixelLab and Aseprite.
   Sizes and palettes depend on the engine, so large art batches wait for
   the engine choice.
