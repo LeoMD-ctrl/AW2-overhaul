@@ -22,8 +22,9 @@ Values marked *(placeholder)* are starting points to tune after playtests.
   maps in Commander Wars; only the CO / unit-type layer persists. This puts
   the emphasis on CO perks.
   - *Future idea, not planned:* a veteran roster that redeploys surviving
-    units on the next map (option b). The user likes it but it is much
-    heavier to build.
+    units on the next map (option b). The user likes it; it is heavier to
+    build but feasible in the mod: `map.spawnUnit(x, y, unitID, owner, ...)`
+    is script-callable (`game/gamemap.h`).
 - **Ranks:** keep the existing 4 ranks and bonuses for now
   (Soldier / Experienced / Veteran / Elite; offence +0/+5/+10/+20 %,
   defence +0/+0/+0/+20 %). Threshold changes to decide after playing.
@@ -118,10 +119,16 @@ for a full-HP unit.
 - **Choice menus:** an action can show a menu, like the factory's build menu
   (`getStepInputType` returns `"MENU"`, `getStepData` fills it with
   `data.addData(...)`, see `ACTION_BUILD_UNITS.js`). A "Promotion" unit
-  action listing random perks is therefore feasible. A post-battle report
-  *screen* between missions is **not** verified; fallback: offer the CO
-  perk choice at the start of the next mission through the same menu
-  mechanism (for example an action added to the HQ).
+  action listing random perks is therefore feasible.
+- **Custom windows:** a script can open a window described in XML + JS with
+  `map.showXmlFileDialog("ui/....xml")` (used by `ACTION_OPTIONS.js`;
+  widgets: Label, Button, Checkbox, Panel, Spinbox, Textbox, Icon, Slider,
+  Box… see `resources/ui/example.xml` and `ui_reader/uifactory.h`). Map
+  scripts get a `victory(team, map)` hook (`resources/scripts/general/basegamescript.js`).
+  A post-battle report window at victory is therefore a candidate; whether
+  it shows before the game leaves the map must be tested. The campaign menu
+  also loads `ui/campaignmenu.xml` from mods, so a progression panel there
+  is possible.
 - **Persistence:**
   - Within a campaign: `campaign.getVariables()` keeps data across maps
     (used by the official campaigns, e.g. `maps/advance_wars_campaign.jsm`).
@@ -189,26 +196,58 @@ heavy tank 10; infantry machine gun vs transport copter 30, attack copter 8.
   table (see `resources/scripts/weapons/`).
 - `ACTION_BUILD_TEMP_AIRPORT` (unit builds a temporary building) is the
   model for the light camp; `ACTION_SUPPORTSINGLE_SUPPLY` for APC resupply.
-  Proposal: model the engineer's "resource" as a 1-shot ammo slot, so the
-  existing APC resupply refills it.
+- The temporary airport script defines `getBaseIncome`,
+  `getConstructionList`, `getDefense`, `getRepairTypes`
+  (`resources/scripts/building/temporary_airport.js`), and
+  `BUILDING.repairUnit` takes the HP to repair as a parameter: income 500,
+  infantry-only production, 1 star and 1 HP repair are all script settings.
+- Engineer charge: store it in `unit.getVariables()` rather than in an ammo
+  slot, because every repairing building refills ammo
+  (`BUILDING.repairUnit` calls `unit.refill`); the factory and the APC
+  supply action are then patched to restore the charge.
 - Capture to destroy: `ACTION_CAPTURE.performPostAnimation` uses a local
   `maxCapturePoints = 20`; the mod can patch it to use 10 for a light camp
   and remove the camp instead of changing its owner.
-- **AI and the engineer.** The AI is C++ (`ai/`) and knows special actions
-  by name (`ACTION_FLARE`, `ACTION_EXPLODE`… in `ai/coreai.cpp`); nothing
-  references the temporary-airport construction, so a new "build camp"
-  action would be ignored by the AI as is. Two routes:
-  - **Scripted routine (no engine change):** a hidden perk on AI COs uses
-    `startOfTurn` to make each AI engineer that has a charge build a camp
-    where it stands, if the spot is valid and the player has fewer than 2
-    camps (`terrain.loadBuilding(...)`, `unit.setHasMoved(true)`, both
-    script-callable). Basic but functional: the AI still moves the engineer
-    like an infantry unit, without planning where to build.
-  - **Engine change in the user's fork (C++):** a real AI behaviour, but the
-    mod would then need the custom build. Only on the user's explicit
-    decision.
+- **AI and the engineer.** The C++ AI does not know a new "build camp"
+  action by itself, but it asks scripts first: for every unit in the
+  default AI mode, `CoreAI::processPredefinedGenericScripted`
+  (`ai/coreai_predefinedai.cpp`) calls
+  `GenericPredefinedUnitMapScriptBehaviour(ai, action, unit, enemies,
+  enemyBuildings, map)` on the map script and on the AI's script object
+  (`NORMALAI` in `resources/aidata/normal/normalai.js`, loaded with mod
+  paths by `resource_management/gamemanager.cpp`). If it returns true, the
+  AI performs the action the script prepared (`action.setActionID`,
+  `action.setMovepath`, `ai.createTargetedPfs` for path finding).
+  So the mod can give AI engineers a real routine — choose a spot, move,
+  build — with no engine change. Equivalent objects exist for the other AI
+  types (`aidata/very_easy/`, `aidata/heavy/`).
+  Fallback if needed: a hidden perk on AI COs using `startOfTurn` to build
+  where the engineer stands (`terrain.loadBuilding`, `unit.setHasMoved`).
   - To confirm in game: the AI buys infantry from a camp and captures
     enemy camps (both go through generic AI code).
+
+## Mod or fork: feasibility summary
+
+Status of each idea from the discussions, checked against the source.
+"Mod" = scripts, XML UI and images only, works with the official game.
+
+| Idea | Mod | Fork (C++) needed? |
+|---|---|---|
+| Unit XP, ranks, unit perks via a "Promotion" menu | Yes | No |
+| CO progression per unit type (cost, offence, defence) | Yes, via CO perks | No |
+| Feats of arms per campaign | Yes, campaign variables | No |
+| Post-battle report window and CO perk choice | Likely (XML window + `victory` hook), to test | Only if the window cannot show at victory |
+| Veteran roster across maps (option b) | Yes (`map.spawnUnit`), heavier | No |
+| Drone, MANPADS, engineer, light camp | Yes | No |
+| AI using engineers and camps | Yes (AI script hook) | Only for a deeper AI |
+| New maps, campaign, dialogues | Yes (editor + scripts) | No |
+| Reputation / romance during missions | Yes (variables, dialogues, XML windows) | No |
+| Panels added to main / campaign / in-game menus | Yes (XML UI from mods) | No |
+| Brand-new full-screen menus (e.g. a camp / barracks screen between missions) | No | Yes |
+| More detailed sprites, longer battle animations | Yes (images + animation scripts) | No |
+| New kinds of visual effects, shaders, a new battle-scene layout | No | Yes |
+| Larger map tiles / different tile size | No (fixed 32 px, `GameMap::defaultImageSize`) | Yes, risky |
+| Changing core rules hard-coded in C++ (damage formula, fog, turn flow) | Partly (many go through script hooks) | Yes for the rest |
 
 ## Axis 3 — New map(s)
 
