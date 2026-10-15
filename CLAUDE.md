@@ -31,6 +31,7 @@ A short campaign with its own story ties the axes together.
 | Path | Content |
 |---|---|
 | `docs/design.md` | Design decisions, proposed XP model, open questions. Its "Technical approach" sections describe Commander Wars. |
+| `docs/story.md` | Story premise, proposals and open questions. |
 | `docs/engines/candidates.md` | Engine comparison against the user's criteria, with sources. |
 | `docs/engines/wargroove.md` | What Wargroove mods can do (verified in published mods) and what remains open. |
 | `docs/engines/commander-wars.md` | Everything verified about Commander Wars, and the prototype's state. |
