@@ -32,9 +32,13 @@ marked *to verify* were not confirmed.
   action in the wargroove-modding GitHub organisation); players rebuilt the
   Advance Wars campaign in the editor; Wargroove 2's Conquest mode carries
   damaged or lost units over between battles.
-- *To verify:* Lua API for new units and buildings, data that persists
-  between campaign missions (needed for CO XP), how far the UI can be
-  changed.
+- Verified in published mods (details in `wargroove.md`): new unit actions
+  in Lua that the AI can use, per-unit data, combat logic overrides, new
+  editor trigger actions; an existing mod (UnitRanks) already implements
+  unit XP and ranks.
+- *To verify:* brand-new unit classes and structures, Lua access to data
+  that persists between campaign missions (needed for CO XP), how far the
+  UI can be changed.
 
 ## Advance Wars 2 ROM hack (GBA, played through an emulator)
 

@@ -32,6 +32,7 @@ A short campaign with its own story ties the axes together.
 |---|---|
 | `docs/design.md` | Design decisions, proposed XP model, open questions. Its "Technical approach" sections describe Commander Wars. |
 | `docs/engines/candidates.md` | Engine comparison against the user's criteria, with sources. |
+| `docs/engines/wargroove.md` | What Wargroove mods can do (verified in published mods) and what remains open. |
 | `docs/engines/commander-wars.md` | Everything verified about Commander Wars, and the prototype's state. |
 | `docs/sprites.md` | Sprite specification for Commander Wars (sizes, colour coding, battle scenes). |
 | `art/` | Drawing palette and frame templates (Commander Wars sizes). |
@@ -61,8 +62,10 @@ A short campaign with its own story ties the axes together.
 
 ## Current status
 
-- Engine choice pending. Next step: verify what Wargroove's mod support can
-  do for the design (see the *to verify* items in `candidates.md`).
+- Engine choice pending. Wargroove is the lead candidate; what is verified
+  and what remains open is in `docs/engines/wargroove.md`. The official
+  modding guide (wargroovewiki.com) is blocked by the work environment's
+  network policy.
 - The user produces sprites with Retro Diffusion, PixelLab and Aseprite.
   Sizes and palettes depend on the engine, so large art batches wait for
   the engine choice.
