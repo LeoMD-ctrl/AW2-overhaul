@@ -104,6 +104,28 @@ format differences; tools and config files must not be mixed between them.
   existing layouts rather than changing them.
 - **Sound:** `.ogg`, 48 kHz; music and SFX through audio-event YAML.
 
+## Wargroove 1 or 2 for this project
+
+Same modding system and the same official guide for both; formats differ
+and must not be mixed. Critics rated Wargroove 2 higher (Metacritic reviews
+81–90, "a massive expansion" rather than a reinvention; criticisms: hand-
+holding campaign, factions that play alike). Player opinion was not
+measured.
+
+| Point | Wargroove 1 | Wargroove 2 |
+|---|---|---|
+| Existing mod examples | More, older: the mods studied above date from 2019, before WG2 existed (UnitRanks very likely WG1) | Official support since the 2024 summer update; featured mods add factions |
+| Damage tables | `tagDamage` per weapon | One matrix `units.csv`, easier to balance |
+| Vision | — | `sightRange` per unit class |
+| Elite units | — | Mini commanders |
+| New terrain | Simple biome / tile configs | Wang tilesets, called fragile by the guide |
+| Mod languages | + Italian, Korean | — |
+
+Recommendation: close call. WG1 if the user prefers its feel, wants to
+start from UnitRanks as is, or plans terrain art; WG2 for the damage matrix,
+vision and mini commanders. The user should pick the game they enjoy
+playing, since the mod lives inside it.
+
 ## Still to verify
 
 1. **Lua access to data that persists between campaign missions** (needed
