@@ -64,9 +64,10 @@ A short campaign with its own story ties the axes together.
 
 - **Decision (2026-10-15): polish comes first.** Between modern military
   theme, polish and moddability, the user keeps polish and moddability:
-  Wargroove (1 or 2, not bought yet) is the target, and the modern theme is
-  transposed into its fantasy world (e.g. a "forbidden technology"
-  faction). The game design stays the same; only the dressing changes.
+  Wargroove (1 or 2, not bought yet) is the target. The user keeps a
+  **modern military faction** as a custom faction inside Wargroove's
+  fantasy world (drone, MANPADS, engineer…). Open point: how many unit
+  classes that faction needs, since each one needs Wargroove-style art.
   What is verified and what remains open is in
   `docs/engines/wargroove.md`. The official modding guide
   (wargroovewiki.com) is blocked by the work environment's network policy.

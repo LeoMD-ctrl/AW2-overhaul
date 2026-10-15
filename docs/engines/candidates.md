@@ -14,8 +14,8 @@ marked *to verify* were not confirmed.
 ## Decision
 
 2026-10-15: no option offers modern theme, polish and moddability at once.
-The user chose **polish**: Wargroove is the target and the theme is
-transposed to fantasy. Commander Wars and the AW2 ROM hack stay documented
+The user chose **polish**: Wargroove is the target, with a modern military
+faction added to its fantasy world. Commander Wars and the AW2 ROM hack stay documented
 as fallbacks.
 
 ## Commander Wars (open source, Advance Wars clone)
