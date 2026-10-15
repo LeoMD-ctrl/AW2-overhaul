@@ -36,9 +36,13 @@ marked *to verify* were not confirmed.
   in Lua that the AI can use, per-unit data, combat logic overrides, new
   editor trigger actions; an existing mod (UnitRanks) already implements
   unit XP and ranks.
-- *To verify:* brand-new unit classes and structures, Lua access to data
-  that persists between campaign missions (needed for CO XP), how far the
-  UI can be changed.
+- Official guide (summary in `wargroove.md`): new unit classes, factions,
+  commanders and mini commanders (WG2), custom editor events, Lua function
+  overrides, cutscenes, French strings; the packer enforces the game
+  palette.
+- *To verify:* Lua access to data that persists between campaign missions
+  (needed for CO XP), spawning a structure from a verb (light camp), UI
+  changes beyond icons and strings.
 
 ## Advance Wars 2 ROM hack (GBA, played through an emulator)
 
