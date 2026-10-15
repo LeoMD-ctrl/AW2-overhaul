@@ -1,0 +1,310 @@
+[
+  {
+    "role": "army 1 (darkest, outline)",
+    "orange_star_rgb": [
+      57,
+      24,
+      24
+    ],
+    "code_rgb": [
+      130,
+      133,
+      0
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 2",
+    "orange_star_rgb": [
+      156,
+      0,
+      57
+    ],
+    "code_rgb": [
+      133,
+      133,
+      35
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 3",
+    "orange_star_rgb": [
+      231,
+      0,
+      8
+    ],
+    "code_rgb": [
+      136,
+      133,
+      70
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 4",
+    "orange_star_rgb": [
+      255,
+      41,
+      0
+    ],
+    "code_rgb": [
+      139,
+      133,
+      105
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 5",
+    "orange_star_rgb": [
+      255,
+      90,
+      0
+    ],
+    "code_rgb": [
+      142,
+      133,
+      140
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 6",
+    "orange_star_rgb": [
+      255,
+      156,
+      115
+    ],
+    "code_rgb": [
+      145,
+      133,
+      175
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army 7 (lightest)",
+    "orange_star_rgb": [
+      255,
+      206,
+      132
+    ],
+    "code_rgb": [
+      148,
+      133,
+      210
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "white highlight",
+    "orange_star_rgb": [
+      255,
+      255,
+      255
+    ],
+    "code_rgb": [
+      151,
+      133,
+      255
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "army grey dark",
+    "orange_star_rgb": [
+      107,
+      90,
+      99
+    ],
+    "code_rgb": [
+      2,
+      133,
+      0
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army grey mid",
+    "orange_star_rgb": [
+      148,
+      140,
+      132
+    ],
+    "code_rgb": [
+      5,
+      133,
+      128
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "army grey light",
+    "orange_star_rgb": [
+      206,
+      189,
+      173
+    ],
+    "code_rgb": [
+      8,
+      133,
+      255
+    ],
+    "changes_with_army": true
+  },
+  {
+    "role": "fixed grey dark",
+    "orange_star_rgb": [
+      56,
+      48,
+      56
+    ],
+    "code_rgb": [
+      2,
+      136,
+      0
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "fixed olive grey",
+    "orange_star_rgb": [
+      112,
+      112,
+      96
+    ],
+    "code_rgb": [
+      5,
+      136,
+      128
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "fixed tan",
+    "orange_star_rgb": [
+      192,
+      168,
+      144
+    ],
+    "code_rgb": [
+      8,
+      136,
+      255
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "skin dark",
+    "orange_star_rgb": [
+      144,
+      80,
+      56
+    ],
+    "code_rgb": [
+      130,
+      7,
+      0
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "skin mid",
+    "orange_star_rgb": [
+      222,
+      132,
+      82
+    ],
+    "code_rgb": [
+      130,
+      4,
+      0
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "skin warm",
+    "orange_star_rgb": [
+      248,
+      152,
+      96
+    ],
+    "code_rgb": [
+      133,
+      7,
+      128
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "skin light",
+    "orange_star_rgb": [
+      248,
+      208,
+      144
+    ],
+    "code_rgb": [
+      136,
+      7,
+      255
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "skin highlight",
+    "orange_star_rgb": [
+      255,
+      222,
+      132
+    ],
+    "code_rgb": [
+      133,
+      4,
+      128
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "glass / light blue",
+    "orange_star_rgb": [
+      173,
+      222,
+      231
+    ],
+    "code_rgb": [
+      139,
+      4,
+      255
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "fixed near white",
+    "orange_star_rgb": [
+      248,
+      248,
+      248
+    ],
+    "code_rgb": [
+      148,
+      138,
+      132
+    ],
+    "changes_with_army": false
+  },
+  {
+    "role": "fixed green",
+    "orange_star_rgb": [
+      71,
+      112,
+      76
+    ],
+    "code_rgb": [
+      136,
+      120,
+      112
+    ],
+    "changes_with_army": false
+  }
+]

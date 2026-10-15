@@ -1,0 +1,26 @@
+GIMP Palette
+Name: AW2O units (Orange Star)
+Columns: 8
+#
+ 57  24  24	army 1 (darkest, outline)
+156   0  57	army 2
+231   0   8	army 3
+255  41   0	army 4
+255  90   0	army 5
+255 156 115	army 6
+255 206 132	army 7 (lightest)
+255 255 255	white highlight
+107  90  99	army grey dark
+148 140 132	army grey mid
+206 189 173	army grey light
+ 56  48  56	fixed grey dark
+112 112  96	fixed olive grey
+192 168 144	fixed tan
+144  80  56	skin dark
+222 132  82	skin mid
+248 152  96	skin warm
+248 208 144	skin light
+255 222 132	skin highlight
+173 222 231	glass / light blue
+248 248 248	fixed near white
+ 71 112  76	fixed green

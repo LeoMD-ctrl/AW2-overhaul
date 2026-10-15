@@ -11,7 +11,9 @@ Reference folders in Commander_Wars:
 
 ## 1. Golden rules (all images)
 
-- **PNG with transparency.** Background fully transparent.
+- **PNG with transparency.** Background fully transparent, and every
+  pixel either fully opaque or fully transparent: the base unit sprites use
+  alpha 0 or 255 only.
 - **No anti-aliasing, no blur, no smooth resize.** Every resize uses
   nearest-neighbour. The atlases use `linearFilter="false"`.
 - **Exact colours only in coded images** (see 2). One wrong RGB value =
@@ -46,9 +48,10 @@ values are the coordinates** of the final colour in a colour table.
   same as the unit codes; the exact list must be extracted before drawing
   terrain.
 
-**Practical workflow:** draw in normal colours with a locked palette (for
-example the Orange Star colours), then convert each colour to its code with
-a script (planned tool, see 7).
+**Practical workflow:** draw in normal colours with the locked palette
+`art/palettes/aw2o_units.gpl` (the 22 codes the base unit masks actually
+use, shown in Orange Star colours), then convert each colour to its code
+(`art/palettes/aw2o_units_codes.json`). See `art/README.md`.
 
 ## 3. Units
 
@@ -62,6 +65,18 @@ a script (planned tool, see 7).
 The base game draws units at **32 × 32 per frame**. Larger frames (64 × 64)
 are accepted: the engine scales each frame to the tile size
 (`game/unit.cpp`).
+
+**Higher resolution, per sprite type (verified in the source):**
+- map sprite: any frame size, scaled automatically to one tile;
+- walk sprite: the unit script passes a scale to
+  `animation.loadSpriteV2(id, mode, scale)` (the base game already uses 1 or
+  2 per army style, `animationData` in `infantry.js`), so 96 × 96 frames
+  with a scale of 0.5 take the place of 48 × 48 ones;
+- battle animation: `scale` parameter of the battle sprite functions;
+- terrain and buildings: scaled by frame width.
+On screen the sprite still covers one tile; at the default zoom a 2× sprite
+is reduced without smoothing, so 1-pixel details may vanish. Test one HD
+sprite in game before producing a full set.
 
 ### 3.2 Movement sprite (required)
 
