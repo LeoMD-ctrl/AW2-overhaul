@@ -98,27 +98,59 @@ Measured sizes:
 | Recon | 144 × 192, `cols="3" rows="4"` | 48 × 48 |
 | Transport copter | 128 × 256, `cols="2" rows="4"` | 64 × 64 |
 
-### 3.3 Battle animation (optional at first)
+### 3.3 Battle animation (the combat scene)
 
-Played in the detailed battle view. One horizontal strip per state, sizes
-depend on the unit:
+Played when a fight is shown in the detailed battle view
+(`game/gameanimation/battleanimation.*`). Not required to test a unit:
+until its art exists, a new unit reuses an existing battle animation, and
+the "overworld" battle mode only uses map sprites.
 
-| Unit | Example | Frame |
-|---|---|---|
-| Infantry | `infantry+ac+fire+mask.png` 64 × 32 (2 frames) | 32 × 32 |
-| Recon | `recon+ac+mask.png` 49 × 56 | 49 × 56 |
-| Transport copter | `t_heli+os+mask.png` 256 × 104 (2 frames) | 128 × 104 |
+**The scene.** Each side is **127 × 192 pixels** (`BattleAnimation::spriteWidth`
+/ `spriteHeigth`). Layers, back to front: sky / base (`base_air.png`…),
+terrain background (`background/back_<terrain>.png`, 128 × 192, 233
+variants by terrain and weather), the units, terrain foreground
+(`foreground/fore_<terrain>+N.png`, 128 × 192), weather overlay
+(`over_rain.png`, `over_snow.png`, `over_sandstorm.png`). All in
+`resources/images/game/battlesprites/`; the terrain scripts choose them
+(`getTerrainAnimationBackground` / `getTerrainAnimationForeground`).
+A new unit does not need new backgrounds.
 
-Infantry has states such as idle, walk, stop, fire, fire up / down, dying,
-and river variants (228 files for all armies). A script
-(`resources/scripts/battleanimations/BATTLEANIMATION_<ID>.js`) chooses
-sprites, scale, frame count, frame time and effects
-(`game/gameanimation/battleanimationsprite.h`), so larger or longer
-animations are possible.
+**How many copies.** Infantry-type units show up to 5 soldiers: count =
+HP ÷ 10 × 5, rounded up, so one soldier per 2 HP
+(`BattleAnimationSprite::getUnitCount`, `getMaxUnitCount` in the unit's
+battle script). The engine draws the same sprite once per soldier at
+offsets set by the script. Vehicles usually show 1.
 
-**Until the art exists, a new unit reuses an existing battle animation**
-(placeholder), so it can be tested without it. The battle view also has an
-"overworld" mode that only uses map sprites.
+**States the script asks for** (infantry, measured; frames 32 × 32,
+`+mask` in code colours, optional plain overlay):
+
+| State | File suffix | Frames | Used when |
+|---|---|---|---|
+| Idle | (none) | 1 | waiting, after firing |
+| Move in | `+walk` | 6 | unit enters the scene |
+| Stop | `+stop` | 2 | end of the move in |
+| Fire | `+fire` | 2 | target on the same level |
+| Fire up | `+fire+up` | 2 | target is an air unit |
+| Fire down | `+fire+down` | 2 | attacker is an air unit |
+| Dying | `+dying` | 1 | destroyed; the engine fades it out |
+| River variants | `+river`, `+river+walk`, `+river+stop`, `+river+fire`… | same | unit stands in a river |
+
+Other units have their own set: the mech fires with 3 frames of 33 × 32,
+the recon uses 49 × 56 frames and a `+fire+air` state, the transport copter
+128 × 104 frames. The script is what defines the list, so a new unit can
+start with fewer states (idle, fire, dying) and reuse others.
+
+**Shared effects** (`resources/images/battleanimations/GeneralSprites/`,
+56 files, not army-specific): muzzle flashes (`mg_shot`, `mg_shot_air`),
+impacts (`mg_hit`, `rocket_hit_air`), rockets (`rocket_up` 3 frames of
+32 × 16, `rocket_launch`, `rocket_trailing_smoke`), explosions
+(`unit_explosion`, `unit_explosion_air`), dust. A MANPADS can fire with
+`rocket_up` and hit with `rocket_hit_air` without new effect art.
+
+**Script-side effects** (no art): colour flash and shake on impact
+(`loadColorOverlayForLastLoadedFrame`, `addUnitshakeToLastLoadedFrame`),
+movement tweens, sounds (`loadSound`, files in `resources/sounds/`), frame
+time and scale per sprite.
 
 ### 3.4 Army styles
 
