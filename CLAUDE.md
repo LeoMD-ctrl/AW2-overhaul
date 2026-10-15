@@ -55,8 +55,21 @@ waiting for the user's go and target value.
 
 A short campaign with its own story ties these together.
 
-Earlier idea, status to confirm with the user: basic infantry gets a
-**"Grenade"** action.
+The grenade action from the first plan is **dropped**.
+
+Design decisions, open questions and the technical approach per axis are in
+`docs/design.md`; sprite formats are in `docs/sprites.md`. Keep both up to
+date when the user decides something.
+
+## Current status
+
+- The user has **no test machine yet**: nothing can be tested in game for
+  now. Keep code changes small and reviewable until testing is possible.
+- The user is preparing sprites and assets with PixelLab and Retro
+  Diffusion; check them against `docs/sprites.md`.
+- The user has a fork of Commander Wars (the `Commander_Wars` repository in
+  the session). It stays read-only: the mod must work with the official
+  game. Any engine (C++) change needs the user's explicit decision.
 
 ## Repository layout
 
