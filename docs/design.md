@@ -8,6 +8,8 @@ Values marked *(placeholder)* are starting points to tune after playtests.
 
 ### Decisions
 
+- **Campaign only.** The persistent CO progression runs only in the
+  campaign, not in skirmish, versus or multiplayer.
 - **Two layers of progression.**
   - **Unit XP (in battle):** a unit earns XP for every meaningful interaction
     with the map or the enemy — dealing damage, destroying a unit, surviving,
@@ -16,37 +18,86 @@ Values marked *(placeholder)* are starting points to tune after playtests.
     with each unit type, weighted by how efficiently those units were used.
     Example: four infantry that performed well → next battle, infantry costs
     less and gets damage and/or resistance bonuses.
+- **Unit XP lasts one battle (option a).** Units do not carry over between
+  maps in Commander Wars; only the CO / unit-type layer persists. This puts
+  the emphasis on CO perks.
+  - *Future idea, not planned:* a veteran roster that redeploys surviving
+    units on the next map (option b). The user likes it but it is much
+    heavier to build.
 - **Ranks:** keep the existing 4 ranks and bonuses for now
   (Soldier / Experienced / Veteran / Elite; offence +0/+5/+10/+20 %,
-  defence +0/+0/+0/+20 %).
-- **Feats of arms → passives:** extra passives unlocked by what units of a
-  type actually did. Example: a unit type that captures a lot gains +25 %
-  capture speed. Requires a persistent record of per-unit-type counters
-  (captures, kills, damage dealt…).
+  defence +0/+0/+0/+20 %). Threshold changes to decide after playing.
+- **Feats of arms → passives, per campaign.** Extra passives unlocked by
+  what units of a type did during the current campaign. Example: a unit type
+  that captures a lot gains faster capture. Stored in campaign variables.
 - **Perk choice, roguelite style:** the player picks perks from a random
-  selection, for replayability.
+  selection.
+  - **Unit perks:** offered during the battle, at the end of the turn in
+    which a unit was promoted.
+  - **CO perks:** offered at the end of the battle, in a post-battle report
+    that also grants the CO's XP.
 - **Death and merging:** a unit that dies loses its own XP; the CO still gets
   the unit-type XP for having used it. XP is kept when units are merged
   (joined).
 - **AI:** the AI gains XP too, scaled by a difficulty coefficient (to tune).
 
+### Proposed model (to validate, all numbers are placeholders)
+
+Principles: every coefficient lives in **one tuning table** (a single script
+file), every number is logged at the end of a battle so playtests produce
+data, and every bonus has a cap.
+
+**Unit XP — events**
+
+| Event | XP | Notes |
+|---|---|---|
+| Damage dealt | 1 per HP removed × value ratio | value ratio = target cost ÷ own cost, clamped 0.5–2: hitting a stronger unit pays more |
+| Counter-attack damage | 50 % of the above | rewards holding ground without making defence the best farm |
+| Destroying a unit | 10 + target cost ÷ 1000 | |
+| Capture progress | 2 per capture point step, +10 on completion | |
+| Surviving an attack | 3 | only when the unit was attacked, so parked units earn nothing |
+| Support | 5 per action | APC resupply, engineer builds a camp, etc. |
+
+Anti-farming: diminishing returns on the same target in a turn, cap of XP per
+unit per turn *(placeholder 40)*.
+
+Rank thresholds *(placeholder)*: 30 / 80 / 160 XP. On a promotion, the unit
+gets its rank bonus and a unit-perk choice at the end of the turn.
+
+**CO XP — efficiency per unit type (post-battle report)**
+
+For each unit type T used during the battle (dead units included):
+
+- `invested(T)` = funds spent on T (plus the value of pre-deployed units of T).
+- `generated(T)` = value of the damage dealt by T (HP removed × target cost
+  ÷ 10) + value of buildings captured + value of support actions.
+- `efficiency(T)` = `generated(T) ÷ invested(T)`, clamped 0.5–2.
+- `coXP(T)` = (sum of the unit XP of T) × `efficiency(T)` × outcome
+  (victory 1.0, defeat 0.5) × difficulty coefficient.
+
+Measuring efficiency as a ratio (value created ÷ value invested) means
+spamming a type does not automatically pay: four well-used infantry beat
+ten wasted ones.
+
+Proficiency levels per unit type *(placeholder 0–5)*, each level giving for
+example −3 % cost and +2 % offence/defence, capped at −15 % cost and
++10 % offence / defence. CO perks offered in the report come on top.
+
+**Feats of arms (per campaign, per unit type)**
+
+Counters: captures, kills, HP dealt, HP received and survived, support
+actions, camps built. Thresholds unlock passives. Example: 15 captures →
+faster capture. Note: the engine's capture bonus is additive (capture rate =
+unit HP + bonus, `getCaptureBonus`), so "+25 %" translates to about +2 or +3
+for a full-HP unit.
+
 ### Open questions
 
-1. Does the system run outside the campaign (skirmish / versus /
-   multiplayer), or only in the campaign?
-2. **Units do not carry over between maps** in Commander Wars: each map
-   starts with its own units. Should individual unit XP last only for one
-   battle (only the CO / unit-type layer persists), or do we build a roster
-   that redeploys surviving veterans on the next map?
-3. Definition of "efficient use" for the CO weighting (for example damage
-   dealt in funds ÷ funds spent on that type, kills, survival rate).
-4. Ranking threshold changes (the kill-based rank-up): to decide after
-   playing the current version.
-5. Scope of the feats record: one campaign only, or across all campaigns of
-   the player?
-6. When is the random perk choice offered (after each mission? at the start
-   of the next one?), how many choices, and caps on cumulative bonuses
-   (maximum discount, maximum damage bonus)?
+1. Validate or adjust the proposed model above (events, ratio, caps).
+2. Unit perk timing: a menu at the end of the turn, or a "Promotion" action
+   the unit can use on its next activation (simpler to build, see below)?
+3. How many perks offered per choice (3?), and is the list shared between
+   unit types or specific to each type?
 
 ### Technical approach (verified in the source)
 
@@ -56,64 +107,78 @@ Values marked *(placeholder)* are starting points to tune after playtests.
   `co.removePerk(id)`, `co.getPerkList()` are callable from scripts
   (`game/co.h`). The engine queries every perk of a CO for hooks, among
   them: `getCostModifier`, `getOffensiveBonus`, `getDeffensiveBonus`,
-  `getCaptureBonus`, `postBattleActions`, `buildedUnit`, `startOfTurn`
-  (signatures in `resources/scripts/general/co.js`). So:
+  `getCaptureBonus`, `postBattleActions`, `buildedUnit`, `startOfTurn`,
+  `getAdditionalBuildingActions` (signatures in
+  `resources/scripts/general/co.js`). So:
   - CO proficiency (discount, damage, resistance per unit type) = mod perks
     added to the player's CO at map start.
   - A hidden "tracker" perk can listen to `postBattleActions` (damage dealt)
     and other hooks to award unit XP. The exact list of event hooks to use
     must be confirmed one by one when implementing.
+- **Choice menus:** an action can show a menu, like the factory's build menu
+  (`getStepInputType` returns `"MENU"`, `getStepData` fills it with
+  `data.addData(...)`, see `ACTION_BUILD_UNITS.js`). A "Promotion" unit
+  action listing random perks is therefore feasible. A post-battle report
+  *screen* between missions is **not** verified; fallback: offer the CO
+  perk choice at the start of the next mission through the same menu
+  mechanism (for example an action added to the HQ).
 - **Persistence:**
   - Within a campaign: `campaign.getVariables()` keeps data across maps
     (used by the official campaigns, e.g. `maps/advance_wars_campaign.jsm`).
   - On a unit during a battle: `unit.getVariables()` (saved with the game,
     `game/unit.cpp` serialises it).
-  - Across campaigns: `Userdata.getScriptVariableFile(filename)` exists
-    (`coreengine/userdata.h`); its use from scripts must still be checked.
   - API: `createVariable`, `getVariable`, `writeDataInt32` / `readDataInt32`,
     `writeDataString`, list variants (`coreengine/scriptvariable(s).h`).
 - **Ranks:** `UNITRANKINGSYSTEM` (`resources/scripts/general/unitrankingsystem.js`).
   Rank-up on kill happens in `ACTION_FIRE.performPostUnitAnimation`. The
   rank bonuses only apply when the game rule "ranking system" is on.
-- **Not verified yet:** a script-driven selection screen for the perk choice
-  (between missions or at map start).
 
 ## Axis 2 — New units
 
 ### Decisions
 
-- **Drone:** one all-rounder unit to start with.
-- **MANPADS:** anti-air infantry, attack range 2 (between infantry and
-  artillery). Against infantry: like an anti-tank infantry unit (mech).
-  Against vehicles: like basic infantry.
+- **Drone:** one all-rounder. An air unit following the air-unit rules, but
+  vulnerable to basic infantry.
+- **MANPADS:** anti-air infantry. Moves, fires and captures like infantry,
+  attack range 2.
+  - Against infantry: like the anti-tank infantry (mech).
+  - Against vehicles: like basic infantry.
+  - Against air units: what anti-tank weapons are to tanks.
 - **Engineer and light camp:**
   - 1 engineer = 1 light camp, then the engineer has no resources left until
-    resupplied by an APC.
+    resupplied, **only by a base (factory) or an APC**.
   - The engineer is **not** consumed when building.
   - Maximum 2 light camps per player.
-  - A light camp can be **destroyed, not captured**.
   - Can be built anywhere except high mountains and water.
-  - A light camp counts as **half a regular building** to start with
-    (income, repair, defence…).
-  - The camp provides resupply, deployment of light units and income.
+  - A light camp counts as **half a regular building**: income 500 instead
+    of 1000, repairs 1 HP instead of 2, defence 1 star.
+  - Produces **infantry only**.
+  - It is **destroyed by capturing it**: 10 capture points instead of 20 for
+    a regular building; completing the capture removes the camp.
 - **AI:** must be able to use every new unit from the start; scenarios can
   restrict this later to match the difficulty.
 
+### Proposed numbers (to validate, from the base game's tables)
+
+Reference values: bazooka vs APC 85, recon 75, light tank 55, neotank 25,
+heavy tank 10; infantry machine gun vs transport copter 30, attack copter 8.
+
+- **MANPADS vs air** (same scale as the bazooka vs armour): transport copter
+  and duster 85, attack copter 75, drone 75, fighter and bomber 55,
+  stealth bomber 25.
+- **Infantry machine gun vs drone:** 35 (more than vs a transport copter).
+- "Infantry only" for the camp: basic infantry only, or every foot unit
+  (infantry, mech, MANPADS, engineer)?
+
 ### Open questions
 
-1. **Drone:** air unit? Movement, fuel, vision, cost? Which units can hit it
-   (anti-air, MANPADS, fighters)? Built at a factory or an airport?
-2. **MANPADS:** damage against air units (its main role)? Minimum range 1
-   or 2? Can it move and fire in the same turn (artillery cannot, infantry
-   can)? Can it capture? Cost?
-3. **Engineer:** does a regular city also refill its resource, or only an
-   APC? Can it capture, fight?
-4. **Light camp:**
-   - "Half a building" in numbers (proposal: income 500 instead of 1000,
-     repairs 1 HP instead of 2, defence 1 star) *(placeholder)*.
-   - Which units can it deploy (infantry, mech, MANPADS, drone, recon…)?
-   - How is it destroyed: attacked like a unit with HP, or something else?
-   - Can a destroyed camp be rebuilt (the 2-camp limit counts live camps)?
+1. Validate the numbers above.
+2. MANPADS with range 2 **and** move-and-fire is a strong combination (no
+   base unit fires at range 2 after moving). Keep it, or give it range 1–2
+   with no move-and-fire, like artillery?
+3. Drone: built at the airport or the factory? Cost, movement, fuel, vision?
+4. "Base" for the engineer's resupply = factory only, or every owned
+   property (city, HQ, factory)?
 
 ### Technical approach (verified in the source)
 
@@ -126,13 +191,24 @@ Values marked *(placeholder)* are starting points to tune after playtests.
   model for the light camp; `ACTION_SUPPORTSINGLE_SUPPLY` for APC resupply.
   Proposal: model the engineer's "resource" as a 1-shot ammo slot, so the
   existing APC resupply refills it.
-- **Risk — AI and custom actions.** The AI (C++, `ai/`) knows special
-  actions by name: `ACTION_FLARE`, `ACTION_EXPLODE`… are hard-coded in
-  `ai/coreai.cpp`, and nothing in `ai/` references the temporary-airport
-  construction. A new "build light camp" action would therefore most likely
-  be ignored by the AI without changes to the engine (C++). Units that only
-  use standard actions (fire, move, capture) should be handled by the AI
-  normally; to confirm in game.
+- Capture to destroy: `ACTION_CAPTURE.performPostAnimation` uses a local
+  `maxCapturePoints = 20`; the mod can patch it to use 10 for a light camp
+  and remove the camp instead of changing its owner.
+- **AI and the engineer.** The AI is C++ (`ai/`) and knows special actions
+  by name (`ACTION_FLARE`, `ACTION_EXPLODE`… in `ai/coreai.cpp`); nothing
+  references the temporary-airport construction, so a new "build camp"
+  action would be ignored by the AI as is. Two routes:
+  - **Scripted routine (no engine change):** a hidden perk on AI COs uses
+    `startOfTurn` to make each AI engineer that has a charge build a camp
+    where it stands, if the spot is valid and the player has fewer than 2
+    camps (`terrain.loadBuilding(...)`, `unit.setHasMoved(true)`, both
+    script-callable). Basic but functional: the AI still moves the engineer
+    like an infantry unit, without planning where to build.
+  - **Engine change in the user's fork (C++):** a real AI behaviour, but the
+    mod would then need the custom build. Only on the user's explicit
+    decision.
+  - To confirm in game: the AI buys infantry from a camp and captures
+    enemy camps (both go through generic AI code).
 
 ## Axis 3 — New map(s)
 
@@ -144,7 +220,7 @@ Level-design advice to be given when we start this axis.
 
 Extra combat animations and more detailed map sprites. Mostly art work; the
 scripts live in `resources/scripts/battleanimations/`. See `docs/sprites.md`
-for formats.
+for formats and what the engine allows (higher-resolution sprites).
 
 ## Axis 5 — Reputation / romance (stretch)
 

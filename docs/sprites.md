@@ -40,6 +40,26 @@ variants). The script that plays them is
 `airport+neutral.png`, `airport+snow.png`). Sizes to measure when we work
 on the light camp.
 
+## Higher-resolution sprites (verified in the source, not tested)
+
+- **Map sprites (units, terrain):** the engine scales each frame to the tile
+  size: scale = tile size (32) ÷ frame width (`game/unit.cpp`,
+  `game/terrain.cpp`). A 64 × 64 frame is therefore drawn in the same
+  square as a 32 × 32 one; the bundled `mods/16x16_units` mod uses this the
+  other way round, with 16 × 16 frames. More detail only shows when the map
+  is zoomed in; how it looks must be checked in game.
+- **Battle animations:** the animation script chooses the sprite, its
+  `scale`, the number of frames, the frame time and the position
+  (`loadSpriteV2` / `loadMovingSpriteV2` in
+  `game/gameanimation/battleanimationsprite.h`). A mod can thus ship
+  larger frames loaded at a smaller scale, more frames, or new effects
+  (shake, colour flash: `addUnitshakeToLastLoadedFrame`,
+  `loadColorOverlayForLastLoadedFrame`).
+- **Frame count:** set by `cols` / `rows` in `res.xml` for map sprites, and
+  by the strip length (or the `frames` parameter) for battle animations.
+- Replacing an existing sprite: a mod ships an image with the same id in its
+  own `res.xml`, like `mods/16x16_units` and `mods/aw_styled_icons`.
+
 ## In the mod
 
 Images go under `images/<category>/` in this repository, with their own
