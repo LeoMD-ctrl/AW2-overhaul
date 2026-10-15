@@ -33,8 +33,8 @@ Two repositories are usually open side by side:
 ### Milestone 0 — validate the toolchain
 
 A minimal mod that loads and changes one infantry stat (its cost). Status:
-`mod.txt` is in place; the infantry change (`scripts/units/infantry.js`) is
-waiting for the user's go and target value.
+implemented in `scripts/units/infantry.js` (cost 1000 → 1500, test value),
+waiting for the user's in-game test.
 
 ### Axes of the overhaul
 

@@ -33,8 +33,9 @@ Values marked *(placeholder)* are starting points to tune after playtests.
   that captures a lot gains faster capture. Stored in campaign variables.
 - **Perk choice, roguelite style:** the player picks perks from a random
   selection.
-  - **Unit perks:** offered during the battle, at the end of the turn in
-    which a unit was promoted.
+  - **Unit perks:** offered during the battle through a **"Promotion"
+    unit action**, available once the unit has been promoted (from the end
+    of the turn of its promotion). The action opens a menu of random perks.
   - **CO perks:** offered at the end of the battle, in a post-battle report
     that also grants the CO's XP.
 - **Death and merging:** a unit that dies loses its own XP; the CO still gets
@@ -95,9 +96,7 @@ for a full-HP unit.
 ### Open questions
 
 1. Validate or adjust the proposed model above (events, ratio, caps).
-2. Unit perk timing: a menu at the end of the turn, or a "Promotion" action
-   the unit can use on its next activation (simpler to build, see below)?
-3. How many perks offered per choice (3?), and is the list shared between
+2. How many perks offered per choice (3?), and is the list shared between
    unit types or specific to each type?
 
 ### Technical approach (verified in the source)
@@ -144,48 +143,48 @@ for a full-HP unit.
 
 ### Decisions
 
-- **Drone:** one all-rounder. An air unit following the air-unit rules, but
-  vulnerable to basic infantry.
-- **MANPADS:** anti-air infantry. Moves, fires and captures like infantry,
-  attack range 2.
+- **Drone:** one all-rounder, **built at the factory only**. An air unit
+  following the air-unit rules, but vulnerable to basic infantry.
+  **Weaker than helicopters, more mobile, more fragile.** Starts with the
+  recon's characteristics (base game `recon.js`: cost 4000, movement 8,
+  vision 5, fuel 80, machine gun with 10 ammo, range 1) with an air
+  movement type.
+- **MANPADS:** anti-air infantry. Moves and captures like infantry; fires
+  **like the artillery: range 1–2, cannot move and fire in the same turn**.
   - Against infantry: like the anti-tank infantry (mech).
   - Against vehicles: like basic infantry.
-  - Against air units: what anti-tank weapons are to tanks.
+  - Against air units: on the bazooka-vs-armour scale (numbers below).
 - **Engineer and light camp:**
   - 1 engineer = 1 light camp, then the engineer has no resources left until
-    resupplied, **only by a base (factory) or an APC**.
+    resupplied, **only by a factory or an APC**.
   - The engineer is **not** consumed when building.
   - Maximum 2 light camps per player.
   - Can be built anywhere except high mountains and water.
   - A light camp counts as **half a regular building**: income 500 instead
     of 1000, repairs 1 HP instead of 2, defence 1 star.
-  - Produces **infantry only**.
+  - Produces **basic infantry only**.
   - It is **destroyed by capturing it**: 10 capture points instead of 20 for
     a regular building; completing the capture removes the camp.
 - **AI:** must be able to use every new unit from the start; scenarios can
   restrict this later to match the difficulty.
 
-### Proposed numbers (to validate, from the base game's tables)
+### Damage numbers (validated, to tune after playtests)
 
-Reference values: bazooka vs APC 85, recon 75, light tank 55, neotank 25,
-heavy tank 10; infantry machine gun vs transport copter 30, attack copter 8.
+Reference values from the base game: bazooka vs APC 85, recon 75, light
+tank 55, neotank 25, heavy tank 10; infantry machine gun vs transport copter
+30, attack copter 8.
 
-- **MANPADS vs air** (same scale as the bazooka vs armour): transport copter
-  and duster 85, attack copter 75, drone 75, fighter and bomber 55,
-  stealth bomber 25.
-- **Infantry machine gun vs drone:** 35 (more than vs a transport copter).
-- "Infantry only" for the camp: basic infantry only, or every foot unit
-  (infantry, mech, MANPADS, engineer)?
+- **MANPADS vs air:** transport copter and duster 85, attack copter 75,
+  drone 75, fighter and bomber 55, stealth bomber 25.
+- **Infantry machine gun vs drone:** 45.
+- Fragility of the drone: every weapon that can hit air units needs a drone
+  entry above its transport-copter value (to define when the drone is built).
 
 ### Open questions
 
-1. Validate the numbers above.
-2. MANPADS with range 2 **and** move-and-fire is a strong combination (no
-   base unit fires at range 2 after moving). Keep it, or give it range 1–2
-   with no move-and-fire, like artillery?
-3. Drone: built at the airport or the factory? Cost, movement, fuel, vision?
-4. "Base" for the engineer's resupply = factory only, or every owned
-   property (city, HQ, factory)?
+1. Drone: which weapon does it use (the recon's machine gun as is, or a
+   drone-specific one), and which base units can hit it besides infantry
+   and anti-air?
 
 ### Technical approach (verified in the source)
 

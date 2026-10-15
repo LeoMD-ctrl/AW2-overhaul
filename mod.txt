@@ -1,6 +1,6 @@
 name=AW2 Overhaul
 description=Gameplay overhaul for Commander Wars: persistent unit experience, new units, new maps and a short campaign. Work in progress.
-version=0.1.0
+version=0.2.0
 compatible_mods=
 incompatible_mods=
 required_mods=
