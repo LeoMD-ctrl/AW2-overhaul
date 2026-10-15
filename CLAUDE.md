@@ -63,8 +63,8 @@ date when the user decides something.
 
 ## Current status
 
-- The user has **no test machine yet**: nothing can be tested in game for
-  now. Keep code changes small and reviewable until testing is possible.
+- The user is installing the game on a computer and will test from there.
+  Until the first in-game test passes, keep code changes small.
 - The user is preparing sprites and assets with PixelLab and Retro
   Diffusion; check them against `docs/sprites.md`.
 - The user has a fork of Commander Wars (the `Commander_Wars` repository in

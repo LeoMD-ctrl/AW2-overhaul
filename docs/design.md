@@ -147,8 +147,8 @@ for a full-HP unit.
   following the air-unit rules, but vulnerable to basic infantry.
   **Weaker than helicopters, more mobile, more fragile.** Starts with the
   recon's characteristics (base game `recon.js`: cost 4000, movement 8,
-  vision 5, fuel 80, machine gun with 10 ammo, range 1) with an air
-  movement type.
+  vision 5, fuel 80, range 1) with an air movement type, and **uses the
+  recon's machine gun** (`WEAPON_RECON_MG`, 10 ammo).
 - **MANPADS:** anti-air infantry. Moves and captures like infantry; fires
   **like the artillery: range 1–2, cannot move and fire in the same turn**.
   - Against infantry: like the anti-tank infantry (mech).
@@ -176,15 +176,15 @@ tank 55, neotank 25, heavy tank 10; infantry machine gun vs transport copter
 
 - **MANPADS vs air:** transport copter and duster 85, attack copter 75,
   drone 75, fighter and bomber 55, stealth bomber 25.
-- **Infantry machine gun vs drone:** 45.
+- **Infantry machine gun vs drone:** 55.
 - Fragility of the drone: every weapon that can hit air units needs a drone
   entry above its transport-copter value (to define when the drone is built).
 
 ### Open questions
 
-1. Drone: which weapon does it use (the recon's machine gun as is, or a
-   drone-specific one), and which base units can hit it besides infantry
-   and anti-air?
+1. Drone: which base units can hit it besides infantry and anti-air
+   (values above their transport-copter values)? `WEAPON_RECON_MG` also
+   needs to decide what the drone can hit with it.
 
 ### Technical approach (verified in the source)
 
