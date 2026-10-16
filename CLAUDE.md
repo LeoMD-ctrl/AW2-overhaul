@@ -35,6 +35,8 @@ A short campaign with its own story ties the axes together.
 | `docs/ideas.md` | Dictionary of every idea with its status (adopted / parked / dropped). Add new ideas here. |
 | `docs/story.md` | Story premise, decisions and open questions. |
 | `docs/art-workflow.md` | How sprites are produced without hand-drawn pixel art. |
+| `docs/art-prototypes.md` | Specification and review checklist for PixelLab prototypes. |
+| `kit/obsidian-vault/` | Reusable Obsidian vault starter for all modding projects (French templates). |
 | `docs/engines/candidates.md` | Engine comparison against the user's criteria, with sources. |
 | `docs/engines/wargroove.md` | What Wargroove mods can do (verified in published mods) and what remains open. |
 | `docs/engines/commander-wars.md` | Everything verified about Commander Wars, and the prototype's state. |

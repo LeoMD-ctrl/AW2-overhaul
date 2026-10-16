@@ -28,6 +28,10 @@ parallel.
 | Buy and install Wargroove 2 | User | 0.5 h | todo |
 | Play the start of the campaign (lore, feel) | User | 4–6 h | todo |
 | List the folders of `modpacker_bin` and send them | User | 0.5 h | todo |
+| Set up the Obsidian vault from `kit/obsidian-vault/` | User | 1 h | todo |
+| PixelLab prototypes: MANPADS then drone (`docs/art-prototypes.md`) | User | 4–8 h | todo |
+| Run the character prompt in Gemini, bring back the results | User | 1 h | todo |
+| Measure the game's sprite sizes, frame counts and pivots | User + Claude | 1 h | todo |
 | Package an example mod, load it in a map | User + Claude | 1–2 h | todo |
 
 ## Phase 1 — Technical spikes (M1)
