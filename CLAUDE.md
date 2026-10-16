@@ -31,7 +31,10 @@ A short campaign with its own story ties the axes together.
 | Path | Content |
 |---|---|
 | `docs/design.md` | Design decisions, proposed XP model, open questions. Its "Technical approach" sections describe Commander Wars. |
-| `docs/story.md` | Story premise, proposals and open questions. |
+| `docs/roadmap.md` | Development plan: milestones, tasks, estimates, risks. Update statuses each session. |
+| `docs/ideas.md` | Dictionary of every idea with its status (adopted / parked / dropped). Add new ideas here. |
+| `docs/story.md` | Story premise, decisions and open questions. |
+| `docs/art-workflow.md` | How sprites are produced without hand-drawn pixel art. |
 | `docs/engines/candidates.md` | Engine comparison against the user's criteria, with sources. |
 | `docs/engines/wargroove.md` | What Wargroove mods can do (verified in published mods) and what remains open. |
 | `docs/engines/commander-wars.md` | Everything verified about Commander Wars, and the prototype's state. |
@@ -72,6 +75,6 @@ A short campaign with its own story ties the axes together.
   What is verified and what remains open is in
   `docs/engines/wargroove.md`. The official modding guide
   (wargroovewiki.com) is blocked by the work environment's network policy.
-- The user produces sprites with Retro Diffusion, PixelLab and Aseprite.
-  Sizes and palettes depend on the engine, so large art batches wait for
-  the engine choice.
+- **The user does not draw pixel art.** Sprites come from generators
+  (Retro Diffusion, PixelLab) or 3D renders, with automatic cleanup; see
+  `docs/art-workflow.md`. Aseprite is available.
