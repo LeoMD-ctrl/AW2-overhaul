@@ -29,18 +29,40 @@ questions. Nothing here is final until the user says so.
   files according to the modding guide's examples; its fit as "demonic" is
   to judge).
 
+## Decisions (from the user, 2026-10-16)
+
+- **Tone arc:** the modern faction starts as a serious, rigid army; the
+  story softens them through character development.
+- **Why the teleportation:** the demons activated an artefact hidden in our
+  world to destabilise the balance of the Wargroove world. Their bet was
+  that a warlike, narrow-minded army would add chaos. It backfires:
+  relations soften and emotional interests converge.
+- **Ending:** a player choice between two endings, each rewarding the player
+  strongly.
+- **Length:** 3 to 5 missions for a first version.
+- **Characters:** not decided; the user wants to play Wargroove 2 first to
+  learn its lore.
+
 ## Open questions
 
-1. Who is the modern faction: a real-world-like army or a fictional nation?
-   Its tone (serious, humorous, mixed)?
-2. Why the teleportation: an accident on their side, a demonic ritual, the
-   world's own magic? Is it linked to the demons from the start?
-3. Who is the player's CO, and who are the key characters (a local rival,
-   a love interest, a demon leader)?
-4. Which local faction is the former enemy, which existing Wargroove
-   characters appear, if any?
-5. Ending: go home, stay, or a choice?
-6. Length: number of missions (the earlier estimate assumed 5 to 8).
+1. Use existing Wargroove 2 characters, only original ones, or a mix
+   (see the comparison below).
+2. Who the player's CO, the local rival, the love interest and the demon
+   leader are.
+3. Which local faction is the former enemy.
+4. What each ending rewards (going home vs. staying, for example).
+
+## Existing characters vs. original characters
+
+| | Existing Wargroove 2 characters | Original characters only |
+|---|---|---|
+| Art | Portraits, map and battle animations already exist | Every commander needs portraits and full animations |
+| Lore | Depth and recognition for free | Total freedom, nothing to contradict |
+| Constraints | Must respect their established personality; requires knowing the lore | The story must establish everyone from scratch |
+| Ownership | Characters belong to Chucklefish; usable only inside a Wargroove mod | Fully the user's, reusable in another project |
+
+Proposal: a mix. Original characters for the modern faction (it needs new
+art anyway) and existing local characters as former enemies and allies.
 
 ## Notes
 
